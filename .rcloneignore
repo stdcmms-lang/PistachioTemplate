@@ -1,0 +1,47 @@
+# Rclone exclude patterns for PistachioTemplate
+# Use with: rclone --exclude-from .rcloneignore
+
+# Build artifacts (matches root and subprojects like composeApp/build)
+build/**
+**/build/**
+.gradle/**
+.kotlin/**
+.cxx/**
+.externalNativeBuild/**
+bin/**
+gen/**
+out/**
+
+# IDE files
+.idea/**
+.vscode/**
+*.iml
+*.iws
+*.ipr
+**/xcuserdata/**
+
+# Local configuration
+local.properties
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# iOS build artifacts
+**/DerivedData/**
+**/Build/**
+**/Index/**
+
+# Version control
+.git/**
+
+# Other transient files
+*.hprof
+*.log
+**/captures/**
+**/node_modules/**
