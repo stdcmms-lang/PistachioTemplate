@@ -13,6 +13,7 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinxSerialization)
+    alias(libs.plugins.valkyrie)
 }
 
 kotlin {
@@ -188,4 +189,18 @@ tasks.register<PullTestArtifactsTask>("pullTestArtifacts") {
 tasks.matching { it.name.startsWith("connected") && it.name.endsWith("AndroidTest") }.configureEach {
     dependsOn("clearLogcat")
     finalizedBy("pullTestArtifacts")
+}
+
+valkyrie {
+    packageName = "com.jetbrains.kmpapp.icons"
+    resourceDirectoryName = "valkyrieResources"
+    iconPack {
+        name = "ValkyrieIcons"
+        targetSourceSet = "commonMain"
+    }
+}
+
+// Ensure icons are generated before any Kotlin compilation
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<*>>().configureEach {
+    dependsOn("generateValkyrieImageVector")
 }
