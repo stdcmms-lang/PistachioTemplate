@@ -48,6 +48,7 @@ kotlin {
             implementation(libs.androidx.test.runner)
             implementation(libs.androidx.test.rules)
             implementation(libs.espresso.core)
+            implementation(libs.androidx.compose.ui.test.junit4)
         }
 
         iosMain.dependencies {
@@ -107,6 +108,7 @@ android {
 
 dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
 }
 
 // Task to clear logcat before tests run

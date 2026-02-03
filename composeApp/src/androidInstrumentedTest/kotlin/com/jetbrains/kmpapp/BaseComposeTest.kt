@@ -1,24 +1,27 @@
 package com.jetbrains.kmpapp
 
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.matcher.ViewMatchers.isRoot
-import androidx.test.ext.junit.rules.ActivityScenarioRule
-import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.platform.app.InstrumentationRegistry
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
-import org.junit.Test
 import org.junit.rules.TestName
-import org.junit.runner.RunWith
 import java.io.File
 
-@RunWith(AndroidJUnit4::class)
-class AndroidInstrumentedTest {
+/**
+ * Base test class for Compose UI tests with video recording functionality.
+ * 
+ * All test classes should extend this class to automatically get:
+ * - Compose test rule
+ * - Test name rule
+ * - Video recording setup/teardown
+ * 
+ * Override [setUp] and [tearDown] if you need additional setup/cleanup logic.
+ */
+abstract class BaseComposeTest {
 
     @get:Rule
-    val activityRule = ActivityScenarioRule(MainActivity::class.java)
+    val composeTestRule = createComposeRule()
 
     @get:Rule
     val testName = TestName()
@@ -26,25 +29,13 @@ class AndroidInstrumentedTest {
     private var videoFile: File? = null
 
     @Before
-    fun setUp() {
+    open fun setUp() {
         startVideoRecording()
     }
 
     @After
-    fun tearDown() {
+    open fun tearDown() {
         stopVideoRecording()
-    }
-
-    @Test
-    fun testScrollingDownGesture() {
-        // Wait for the activity to be fully loaded
-        Thread.sleep(2000)
-
-        // Perform swipe up gesture to simulate scrolling down
-        Espresso.onView(isRoot()).perform(ViewActions.swipeUp())
-
-        // Wait a bit for the scroll to complete
-        Thread.sleep(1000)
     }
 
     private fun startVideoRecording() {
@@ -68,12 +59,15 @@ class AndroidInstrumentedTest {
             // Note: screenrecord has a default 3-minute limit which is plenty for a test
             instrumentation.uiAutomation.executeShellCommand("screenrecord ${videoFile!!.absolutePath}")
         } catch (e: Exception) {
-            android.util.Log.e("AndroidInstrumentedTest", "Failed to start video recording", e)
+            android.util.Log.e(getLogTag(), "Failed to start video recording", e)
         }
     }
 
     private fun stopVideoRecording() {
         try {
+            // Ensure test is at least 1s long
+            Thread.sleep(1000)
+
             // Send SIGINT to screenrecord to stop it gracefully so the MP4 header is written correctly
             InstrumentationRegistry.getInstrumentation().uiAutomation.executeShellCommand("pkill -2 screenrecord")
             
@@ -81,10 +75,15 @@ class AndroidInstrumentedTest {
             Thread.sleep(500)
 
             videoFile?.let {
-                android.util.Log.d("AndroidInstrumentedTest", "Video saved to: ${it.absolutePath}")
+                android.util.Log.d(getLogTag(), "Video saved to: ${it.absolutePath}")
             }
         } catch (e: Exception) {
-            android.util.Log.e("AndroidInstrumentedTest", "Failed to stop video recording", e)
+            android.util.Log.e(getLogTag(), "Failed to stop video recording", e)
         }
     }
+
+    /**
+     * Returns the log tag for this test class. Override if you want a custom tag.
+     */
+    protected open fun getLogTag(): String = this::class.simpleName ?: "BaseComposeTest"
 }
