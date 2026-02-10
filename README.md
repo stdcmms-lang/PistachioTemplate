@@ -1,27 +1,58 @@
-# Kotlin Multiplatform app template
+# Pistachio Template Suite
 
-[![official project](http://jb.gg/badges/official.svg)](https://confluence.jetbrains.com/display/ALL/JetBrains+on+GitHub)
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+## What is it?
 
-This is a basic Kotlin Multiplatform app template for Android and iOS. It includes shared business logic and data handling, and a shared UI implementation using Compose Multiplatform.
+Pistachio is a suite of Skills, SubAgents, and Examples to facilitate cross-platform mobile development. It is intended to help non-technical users without mobile development experience quickly build an app for both Android and iOS.
 
-> The template is also available [with native UI written in Jetpack Compose and SwiftUI](https://github.com/kotlin/KMP-App-Template-Native).
->
-> The [`amper` branch](https://github.com/Kotlin/KMP-App-Template/tree/amper) showcases the same project configured with [Amper](https://github.com/JetBrains/amper).
+## Features
 
-![Screenshots of the app](images/screenshots.png)
+- **One-shot setup:** In your vibe coding clients (Claude Code or Open Code), use `/check-local-project` to install all dependencies and tools for mobile development (Android SDK, iOS emulator, etc.).
 
-### Technologies
+- **Save tokens by sharing code:** This suite is a thin wrapper on top of the official Kotlin Multiplatform template, which allows you to share code between iOS and Android apps.
 
-The data displayed by the app is from [The Metropolitan Museum of Art Collection API](https://metmuseum.github.io/).
+- **Flexibility:** Unlike other cross-platform frameworks like React Native and Flutter, you have full flexibility to choose which tech stack to use for your app. You can build with native iOS SwiftUI or Android Jetpack Compose components.
 
-The app uses the following multiplatform dependencies in its implementation:
+- **Asset discovery:** Pistachio MCP server provides tools to search for fonts and image assets.
 
-- [Compose Multiplatform](https://jb.gg/compose) for UI
-- [Compose Navigation](https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-navigation-routing.html)
-- [Ktor](https://ktor.io/) for networking
-- [kotlinx.serialization](https://github.com/Kotlin/kotlinx.serialization) for JSON handling
-- [Coil](https://github.com/coil-kt/coil) for image loading
-- [Koin](https://github.com/InsertKoinIO/koin) for dependency injection
+- **Autonomy:** Pistachio MCP server gives the AI model the ability to "see" interactions on your app, closing the feedback loop for autonomous development.
 
-> These are just some of the possible libraries to use for these tasks with Kotlin Multiplatform, and their usage here isn't a strong recommendation for these specific libraries over the available alternatives. You can find a wide variety of curated multiplatform libraries in the [kmp-awesome](https://github.com/terrakok/kmp-awesome) repository.
+## How to use it
+
+1. Add Pistachio to your MCP configuration.
+
+   **For `.mcp.json`:**
+
+   ```json
+   {
+     "mcpServers": {
+       "pistachio": {
+         "type": "http",
+         "url": "https://mcp.pistachio.technology/message",
+         "transport": {
+           "type": "http"
+         }
+       }
+     }
+   }
+   ```
+
+   **For `opencode.json`:**
+
+   ```json
+   {
+     "$schema": "https://opencode.ai/config.json",
+     "mcp": {
+       "pistachio": {
+         "type": "remote",
+         "url": "https://mcp.pistachio.technology/message",
+         "enabled": true
+       }
+     }
+   }
+   ```
+
+2. Run `/check-local-project ProjectName com.project.package.name` to set up your project.
+
+3. Restart your client to reload the newly added skills.
+
+4. Use `/image-to-app` to create an entire app from mobile screenshots.
