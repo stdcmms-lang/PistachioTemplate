@@ -56,3 +56,7 @@ Pistachio is a suite of Skills, SubAgents, and Examples to facilitate cross-plat
 3. Restart your client to reload the newly added skills.
 
 4. Use `/image-to-app` to create an entire app from mobile screenshots.
+
+[![MCP Badge](https://lobehub.com/badge/mcp/stdcmms-lang-pistachiotemplate)](https://lobehub.com/mcp/stdcmms-lang-pistachiotemplate)
+
+[![MCP Badge](https://lobehub.com/badge/mcp-full/stdcmms-lang-pistachiotemplate?theme=light)](https://lobehub.com/mcp/stdcmms-lang-pistachiotemplate)
